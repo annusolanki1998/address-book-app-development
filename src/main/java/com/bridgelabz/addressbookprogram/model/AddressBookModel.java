@@ -6,10 +6,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
 @Data
 @Entity
-@Table(name = "AddressBook")
+@Table(name = "addressbook")
 public class AddressBookModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
