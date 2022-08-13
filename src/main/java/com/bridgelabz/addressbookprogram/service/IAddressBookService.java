@@ -11,13 +11,13 @@ public interface IAddressBookService {
 
     AddressBookModel addContact(AddressBookDTO addressBookDTO);
 
-    AddressBookModel updateContact(Long id, AddressBookDTO addressBookDTO);
+    AddressBookModel updateContact(Long id, AddressBookDTO addressBookDTO, String token);
 
     List<AddressBookModel> getContacts(String token);
 
-    AddressBookModel deleteContact(Long id);
+    AddressBookModel deleteContact(Long id, String token);
 
-    AddressBookModel getContact(Long id);
+    AddressBookModel getContact(Long id, String token);
 
     ResponseUtil login(String emailId, String password);
 }

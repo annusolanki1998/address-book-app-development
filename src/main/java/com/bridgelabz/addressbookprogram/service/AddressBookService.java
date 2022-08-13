@@ -28,24 +28,28 @@ public class AddressBookService implements IAddressBookService {
         addressBookRepository.save(addressBookModel);
         return addressBookModel;
     }
-
-
-    public AddressBookModel updateContact(Long id, AddressBookDTO addressBookDTO) {
-        Optional<AddressBookModel> isContactPresent = addressBookRepository.findById(id);
-        if (isContactPresent.isPresent()) {
-            isContactPresent.get().setFirstName(addressBookDTO.getFirstName());
-            isContactPresent.get().setLastName(addressBookDTO.getLastName());
-            isContactPresent.get().setAddress(addressBookDTO.getAddress());
-            isContactPresent.get().setCity(addressBookDTO.getCity());
-            isContactPresent.get().setState(addressBookDTO.getState());
-            isContactPresent.get().setZip(addressBookDTO.getZip());
-            isContactPresent.get().setPhoneNumber(addressBookDTO.getPhoneNumber());
-            isContactPresent.get().setUpdatedDate(LocalDateTime.now());
-            addressBookRepository.save(isContactPresent.get());
-            return isContactPresent.get();
-        } else {
-            throw new AddressBookException(400, "Contact is not Found");
+    @Override
+    public AddressBookModel updateContact(Long id, AddressBookDTO addressBookDTO, String token) {
+        Long contactId = tokenUtil.decodeToken(token);
+        Optional<AddressBookModel> isContact = addressBookRepository.findById(contactId);
+        if (isContact.isPresent()) {
+            Optional<AddressBookModel> isContactPresent = addressBookRepository.findById(id);
+            if (isContactPresent.isPresent()) {
+                isContactPresent.get().setFirstName(addressBookDTO.getFirstName());
+                isContactPresent.get().setLastName(addressBookDTO.getLastName());
+                isContactPresent.get().setAddress(addressBookDTO.getAddress());
+                isContactPresent.get().setCity(addressBookDTO.getCity());
+                isContactPresent.get().setState(addressBookDTO.getState());
+                isContactPresent.get().setPhoneNumber(addressBookDTO.getPhoneNumber());
+                isContactPresent.get().setZip(addressBookDTO.getZip());
+                isContactPresent.get().setUpdatedDate(LocalDateTime.now());
+                addressBookRepository.save(isContactPresent.get());
+                return isContactPresent.get();
+            } else {
+                throw new AddressBookException(400, "Contact is not Found");
+            }
         }
+        throw new AddressBookException(400, "Token is wrong");
     }
 
     @Override
@@ -65,24 +69,34 @@ public class AddressBookService implements IAddressBookService {
 
 
     @Override
-    public AddressBookModel deleteContact(Long id) {
-        Optional<AddressBookModel> isContactPresent = addressBookRepository.findById(id);
-        if (isContactPresent.isPresent()) {
-            addressBookRepository.delete(isContactPresent.get());
-            return isContactPresent.get();
-        } else {
-            throw new AddressBookException(400, "Contact not Found");
+    public AddressBookModel deleteContact(Long id, String token) {
+        Long contactId = tokenUtil.decodeToken(token);
+        Optional<AddressBookModel> isContact = addressBookRepository.findById(contactId);
+        if (isContact.isPresent()) {
+            Optional<AddressBookModel> isContactPresent = addressBookRepository.findById(id);
+            if (isContactPresent.isPresent()) {
+                addressBookRepository.delete(isContactPresent.get());
+                return isContactPresent.get();
+            } else {
+                throw new AddressBookException(400, "Contact not Found");
+            }
         }
+        throw new AddressBookException(400, "Token is wrong");
     }
 
     @Override
-    public AddressBookModel getContact(Long id) {
-        Optional<AddressBookModel> isContactPresent = addressBookRepository.findById(id);
-        if (isContactPresent.isPresent()) {
-            return isContactPresent.get();
-        } else {
-            throw new AddressBookException(400, "Contact not found");
+    public AddressBookModel getContact(Long id, String token) {
+        Long contactId = tokenUtil.decodeToken(token);
+        Optional<AddressBookModel> isContact = addressBookRepository.findById(contactId);
+        if (isContact.isPresent()) {
+            Optional<AddressBookModel> isContactPresent = addressBookRepository.findById(id);
+            if (isContactPresent.isPresent()) {
+                return isContactPresent.get();
+            } else {
+                throw new AddressBookException(400, "Contact not found");
+            }
         }
+        throw new AddressBookException(400, "Token is Wrong");
     }
 
     @Override
