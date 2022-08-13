@@ -17,15 +17,19 @@ import java.util.Optional;
 public class AddressBookService implements IAddressBookService {
     @Autowired
     AddressBookRepository addressBookRepository;
-
     @Autowired
     TokenUtil tokenUtil;
+    @Autowired
+    MailService mailService;
 
     @Override
     public AddressBookModel addContact(AddressBookDTO addressBookDTO) {
         AddressBookModel addressBookModel = new AddressBookModel(addressBookDTO);
         addressBookModel.setRegisterDate(LocalDateTime.now());
         addressBookRepository.save(addressBookModel);
+        String body = "Employee is added successfully with employeeId " + addressBookModel.getId();
+        String subject = "Employee registration successful";
+        mailService.send(addressBookModel.getEmailId(), subject, body);
         return addressBookModel;
     }
     @Override
