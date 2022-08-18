@@ -117,5 +117,28 @@ public class AddressBookService implements IAddressBookService {
         throw new AddressBookException(400, "No Contact Found");
     }
 
+    @Override
+    public List<AddressBookModel> findByCityName(String city) {
+        List<AddressBookModel> isCityPresent = addressBookRepository.findByCityContainsIgnoreCase(city);
+        if (isCityPresent.size() > 0) {
+            return isCityPresent;
+        } else {
+            throw new AddressBookException(400, "city not found");
+        }
+    }
+
+
+    @Override
+    public List<AddressBookModel> findByStateName(String state) {
+        List<AddressBookModel> isState = addressBookRepository.findByState(state);
+        if (isState.size() > 0) {
+            return isState;
+        } else {
+            throw new AddressBookException(400, "state not found");
+        }
+    }
+
+
+
 }
 

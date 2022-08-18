@@ -20,4 +20,8 @@ public interface IAddressBookService {
     AddressBookModel getContact(Long id, String token);
 
     ResponseUtil login(String emailId, String password);
+
+    List<AddressBookModel> findByCityName(String city);
+
+    List<AddressBookModel> findByStateName(String state);
 }

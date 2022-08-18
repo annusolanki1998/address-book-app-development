@@ -51,5 +51,15 @@ public class AddressBookController {
         return addressBookService.login(emailId, password);
     }
 
+    @GetMapping("/findbycityname")
+    public List<AddressBookModel> findByCityName(@RequestParam String city) {
+        return addressBookService.findByCityName(city);
+    }
+
+    @GetMapping("/findbystate")
+    public List<AddressBookModel> findByState(@RequestParam String state) {
+        return addressBookService.findByStateName(state);
+    }
+
 }
 
